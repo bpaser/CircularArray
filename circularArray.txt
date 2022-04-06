@@ -1,0 +1,67 @@
+package Java;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+
+public class CircularArray <T> implements Iterable<T> {
+
+    private List<T> array = new ArrayList<>();
+
+    public CircularArray(List<T> array){
+        this.array = array;
+    }
+
+    public void printArray(){
+        for( T element: this.array){
+            System.out.println(element);
+        }
+    }
+
+    public void rotateClk(){
+        T temp = this.array.get(this.array.size() - 1);
+
+        for(int i = (this.array.size() -1); i > 0; i--){
+            this.array.set(i, this.array.get(i -1));
+        }
+
+        this.array.set(0, temp);
+    }
+
+
+    @Override
+    public Iterator<T> iterator() {
+        return new cirularArrayIterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+        Iterable.super.forEach(action);
+    }
+
+    @Override
+    public Spliterator<T> spliterator() {
+        return Iterable.super.spliterator();
+    }
+
+    class cirularArrayIterator implements Iterator<T>{
+
+        int i = -1;
+
+        @Override
+        public boolean hasNext(){
+            if(i < (array.size() - 1)){
+                return true;
+            }
+            return false;
+
+        }
+        @Override
+        public T next(){
+            i++;
+            return array.get(i);
+        }
+    }
+}
